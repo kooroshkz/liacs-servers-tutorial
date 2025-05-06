@@ -1,62 +1,93 @@
 # liacs-servers-tutorial
 A brief tutorial on how to connect to LIACS servers using SSH - to be completed later in summer
 
+## 1. Connect to LIACS
 
-# Neural-Computing-Group-Assignment
-Group assignment for Neural Computing
+1. **Gateway**  
+   ```bash
+   ssh s<student-number>@ssh.liacs.nl
+   ```
 
-### Run Venv for project
+2. **GPU server**
+   Check available servers: [https://rel.liacs.nl/labs/dslab](https://rel.liacs.nl/labs/dslab)
+   Currently using **vibranium**:
+
+   ```bash
+   ssh vibranium.liacs.nl
+   ```
+
+## 2. Transfer Files
+
+1. **Archive locally**
+
+   ```bash
+   zip -r project.zip my_folder/
+   ```
+2. **Upload to gateway**
+
+   ```bash
+   scp project.zip s<student-number>@ssh.liacs.nl:~/
+   ```
+3. **Transfer to GPU server**
+
+   ```bash
+   scp ~/project.zip s<student-number>@vibranium.liacs.nl:/data/s3893995/
+   ```
+
+## 3. Set Up Virtual Environment
+
+### Using `venv`
+
 ```bash
 python3 -m venv nc_venv
 source nc_venv/bin/activate
-pip install torchvision==0.21.0 torch==2.6.0 notebook==7.3.3 ipykernel==6.29.5
+pip install \
+  torchvision==0.21.0 \
+  torch==2.6.0 \
+  notebook==7.3.3 \
+  ipykernel==6.29.5
 ```
-#### Use conda for python 3.9+ (In case u faced the red error type)
+
+### Using Conda (if you hit version errors)
+
 ```bash
 conda create -y -p ./nc_venv python=3.9
 conda activate ./nc_venv
-pip install torchvision==0.21.0 torch==2.6.0 notebook==7.3.3 ipykernel==6.29.5
-
-```
-### If you are a Windows user (not recommended btw)
-```bash
-python -m venv nc_venv
-nc_venv\Scripts\activate
-pip install torchvision torch==2.6.0 --index-url https://download.pytorch.org/whl/cu126
-pip install notebook==7.3.3 ipykernel==6.29.5
+pip install \
+  torchvision==0.21.0 \
+  torch==2.6.0 \
+  notebook==7.3.3 \
+  ipykernel==6.29.5
 ```
 
-### How to connect to LIACS ds lab servers
-```bash
-ssh <stu_no>@ssh.liacs.nl
-```
-Then we have to jump to either `vibranium`(Two powerful GPU) or `duranium`(Multiple GPU) server
-```bash
-ssh vibranium # or ssh duranium
-```
-### Run in the background
+## 4. Run Jobs in Background
 
-#### with `Screen`
+### With `screen`
+
 ```bash
-screen -S session_name
+screen -S my_session
 python model.py
-Ctrl + A, then D
-screen -r session_name
-screen -list # to see the list of running screens
+# Detach: Ctrl+A then D
+# Reattach:
+screen -r my_session
+screen -list   # list sessions
 ```
 
-#### with `tmux`
+### With `tmux`
+
 ```bash
-tmux new -s Model
-# detach with Ctrl-b then d
-tmux attach -t Model    # re-attach later
-tmux ls # list running screens
+tmux new -s my_session
+python model.py
+# Detach: Ctrl+B then D
+# Reattach:
+tmux attach -t my_session
+tmux ls        # list sessions
 ```
 
+## 5. Handy Server Commands
 
-
-### Check GPU usage
 ```bash
-nvidia-smi
-gpustat
+htop        # monitor CPU/memory
+nvidia-smi  # GPU status
+gpustat     # GPU usage summary
 ```
