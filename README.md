@@ -1,5 +1,7 @@
 # liacs-servers-tutorial
-A brief tutorial on how to connect to LIACS servers using SSH - to be completed later in summer
+A brief tutorial on how to connect to LIACS servers using SSH - to be completed later in the summer
+
+[![Watch the video](https://files.kooroshkz.com/cover.png)](https://www.youtube.com/watch?v=FVkeAoc68gQ)
 
 ## 1. Connect to LIACS
 
@@ -18,20 +20,15 @@ A brief tutorial on how to connect to LIACS servers using SSH - to be completed 
 
 ## 2. Transfer Files
 
-1. **Archive locally**
+1. **Upload to gateway**
 
    ```bash
-   zip -r project.zip my_folder/
+   scp <file-origin-address> s<student-number>@ssh.liacs.nl:~/
    ```
-2. **Upload to gateway**
+2. **Transfer to GPU server**
 
    ```bash
-   scp project.zip s<student-number>@ssh.liacs.nl:~/
-   ```
-3. **Transfer to GPU server**
-
-   ```bash
-   scp ~/project.zip s<student-number>@vibranium.liacs.nl:/data/s3893995/
+   scp ~/<file-name> s<student-number>@vibranium.liacs.nl:/data/<stu-number-with-s>/
    ```
 
 ## 3. Set Up Virtual Environment
